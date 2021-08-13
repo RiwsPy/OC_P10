@@ -1,0 +1,89 @@
+{% extends 'templates/layouts/base.html' %}
+{% load static %}
+{% block title %}Aliment{% endblock %}
+
+{% block header %}
+    <header class="masthead">
+        <div class="container">
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="col align-self-end">
+                    {% if msg %}
+                        <h1 class="text-uppercase text-white font-weight-bold">{{ msg }}</h1>
+                        <hr class="divider my-4" />
+                    {% endif %}
+
+        {% if id %}
+            <div id="portfolio">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="portfolio-box" href="{{ id.picture_url }}" title="{{ id.product_name }}">
+                                <img src="{{ id.picture_url }}" alt="food picture" height="200" width="200"/>
+                                <div class="portfolio-box-caption">
+                                    <div class="project-category text-white-50">{{ id.product_name }}</div>
+                                    <div class="project-name">{{ id.nutrition_grades|upper }}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid" style="margin-top: 20px;">
+                <div class="row">
+                    <!-- IMG NUTRI-SCORE -->
+                    <div class="col-6">
+                        <h3 class="color-biscuit">Nutri-score :</h3>
+                        {% if id.nutrition_grades|upper == 'A' %}
+                            <img src="{% static 'img/Nutri-A.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
+                        {% elif id.nutrition_grades|upper == 'B' %}
+                            <img src="{% static 'img/Nutri-B.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
+                        {% elif id.nutrition_grades|upper == 'C' %}
+                            <img src="{% static 'img/Nutri-C.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
+                        {% elif id.nutrition_grades|upper == 'D' %}
+                            <img src="{% static 'img/Nutri-D.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
+                        {% else %}
+                            <img src="{% static 'img/Nutri-E.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
+                        {% endif %}
+                    </div>
+                    <div class="col-6 nutri_table">
+                        <h3 class="font-weight-bold color-biscuit">Repères nutritionnels pour 100g :</h3>
+                        <table>
+                            <tr>
+                                <th>Energie :</th><td>{{ id.energy_value }}</td>
+                            </tr>
+                            <tr>
+                                <th>Matières grasses :</th><td>{{ id.fat_value }}</td>
+                            </tr>
+                            <tr>
+                                <th>Glucides :</th><td>{{ id.sugar_value }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fibres alimentaires :</th><td>{{ id.fiber_value }}</td>
+                            </tr>
+                            <tr>
+                                <th>Protéines :</th><td>{{ id.protein_value }}</td>
+                            </tr>
+                            <tr>
+                                <th>Sel :</th><td>{{ id.salt_value }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+            <a href="{{ id.off_url }}"
+            class="btn btn-outline-info btn-block"
+            role="button"
+            style="width: 25%; margin-bottom: 30px;"
+            target="_blank">Voir la fiche d'OpenFoodFacts</a>
+        {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}
+
+{% block content %}{% endblock %}
