@@ -33,17 +33,7 @@
                     <!-- IMG NUTRI-SCORE -->
                     <div class="col-6">
                         <h3 class="color-biscuit">Nutri-score :</h3>
-                        {% if id.nutrition_grades|upper == 'A' %}
-                            <img src="{% static 'img/Nutri-A.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
-                        {% elif id.nutrition_grades|upper == 'B' %}
-                            <img src="{% static 'img/Nutri-B.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
-                        {% elif id.nutrition_grades|upper == 'C' %}
-                            <img src="{% static 'img/Nutri-C.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
-                        {% elif id.nutrition_grades|upper == 'D' %}
-                            <img src="{% static 'img/Nutri-D.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
-                        {% else %}
-                            <img src="{% static 'img/Nutri-E.jpg' %}" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
-                        {% endif %}
+                        <img src="https://static.openfoodfacts.org/images/misc/nutriscore-{{ id.nutrition_grades|lower }}.svg" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
                     </div>
                     <div class="col-6 nutri_table">
                         <h3 class="font-weight-bold color-biscuit">Repères nutritionnels pour 100g :</h3>

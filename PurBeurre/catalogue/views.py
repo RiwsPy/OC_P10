@@ -1,23 +1,23 @@
 from django.core import paginator
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Product
+from .models import Favorite_product, Product
 from django.http import Http404
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-def index(request, product_id=None):
+def result(request, product_name='', page=1):
     # raise Http404("Sorry... This page doesn't exist.")
-    if 'product_search' in request.GET:
-        product_name = request.GET['product_search']
-    else:
-        product_name = product_id
+    if request.method != 'GET':
+        return redirect('home')
 
-    print('index', request.method, product_name)
+    product_name = request.GET.get('product_search', '')
+
+    print('result', request.method, product_name)
     # search by name
     product_id = Product.objects.filter(product_name__icontains=product_name)
-    print(product_id)
 
     # search by code
     if not product_id.exists():
@@ -41,6 +41,7 @@ def index(request, product_id=None):
         all_objects = paginator.page(paginator.num_pages)
 
     context = {
+        'search_product': product_name,
         'id': product_id,
         'db': all_objects,
         'paginate': True,
@@ -72,11 +73,20 @@ def details(request, product_id):
     context = {'id': product_id}
     return render(request, 'catalogue/details.html', context=context)
 
-def save(request, product_id):
-    print('save')
-    if request.user.is_authenticated:
-        product_id = Product.objects.get(pk=product_id)
-        print(product_id.favorites)
-        product_id.favorites.add(request.user.username)
-        print('produit sauvegardé')
+@login_required(login_url='/user/login/')
+def save(request):
+    if request.method != 'POST':
+        return redirect('home')
+
+    print('okk')
+    new_favorite_product = Favorite_product()
+    new_favorite_product.save(
+        product=Product.objects.get(request.POST['product_id']),
+        substitute=Product.objects.get(request.POST['substitute_id']),
+        user=request.user
+    )
+    print('lala')
+    
+    print(new_favorite_product)
+    print('produit sauvegardé')
     return redirect('account')

@@ -42,14 +42,10 @@
                         <li class="nav-item"><a class="nav-link" href="/"><button type="button" class="btn btn-warning" title="Accueil" style="background-color: rgb(204, 193, 193);">Chercher</button></a></li>
                         {% if user.is_authenticated %}
                             <li class="nav-item"><a class="nav-link" href="/user/connexion/"><button type="button" class="btn btn-warning" title="Mon compte"><i class="fas fa-user"></i></button></a></li>
-                        {% else %}
-                            <li class="nav-item"><a class="nav-link" href="/user/connexion/"><button type="button" class="btn btn-warning" title="Créer un compte"><i class="fas fa-user"></i></button></a></li>
-                        {% endif %}
-                        <li class="nav-item"><a class="nav-link" href="#"><button type="button" class="btn btn-warning" title="Mes aliments"><img src="{% static 'img/carrot.png' %}" width="20" height="20" alt="Food menu"/></button></a></li>
-                        {% if user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link" href="#"><button type="button" class="btn btn-warning" title="Mes aliments"><img src="{% static 'img/carrot.png' %}" width="20" height="20" alt="Food menu"/></button></a></li>
                             <li class="nav-item"><a class="nav-link" href="/user/logout/"><button type="button" class="btn btn-warning" title="Déconnexion"><i class="fas fa-sign-out-alt"></i></button></a></li>
                         {% else %}
-                            <li class="nav-item"><a class="nav-link" href="/user/logout/"><button type="button" class="btn btn-warning" title="Accueil"><i class="fas fa-sign-out-alt"></i></button></a></li>
+                            <li class="nav-item"><a class="nav-link" href="/user/connexion/"><button type="button" class="btn btn-warning" title="Créer un compte"><i class="fas fa-user"></i></button></a></li>
                         {% endif %}
                     </ul>
                 </div>
