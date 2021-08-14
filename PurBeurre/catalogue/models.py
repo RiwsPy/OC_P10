@@ -1,6 +1,7 @@
 from django.db import models
 from catalogue.management.commands.enums import OFF_TO_DB, OFF_TO_DB_NUTRIMENTS, URL_PRODUCT
-from user.forms import UserForm
+from django.contrib.auth.models import User
+from django.db.models import UniqueConstraint
 
 # Produit
 # Table d'association Produit / Catégorie
@@ -71,4 +72,19 @@ class Product(models.Model):
 
 
 class Favorite_product(models.Model):
-    pass
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='source_product')
+    substitute = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='substitude_product')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def save(self, **kwargs):
+        print('product save !')
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+        super().save()
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                fields=['product', 'substitute'],
+                name='favorite_unique')
+        ]
