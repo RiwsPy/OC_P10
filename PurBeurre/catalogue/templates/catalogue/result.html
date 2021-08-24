@@ -3,104 +3,49 @@
 {% block title %}Résultats{% endblock %}
 
 {% block header %}
-    <header class="masthead">
-        {% if product_id %}
-            <div class="title_product" style="
-                background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url('{{ product_id.picture_url }}');
-                background-position: center;">
-        {% else %}
-            <div class="title_product">
-        {% endif %}
-            <div class="row align-items-center justify-content-center text-center">
-                <div class="col align-self-center">
-                    {% if product_id %}
-                        <h1 class="color-caramel">{{ product_id.product_name }}</h1>
-                    {% else %}
-                        <h1 class="color-caramel">{{ user_search }}</h1>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row align-items-center justify-content-center text-center">
-                <div class="col align-self-end">
-                    {% if msg %}
-                        <h1 class="text-uppercase text-white font-weight-bold">{{ msg }}</h1>
-                        <hr class="divider my-4" />
-                    {% endif %}
-
-        <div class="text-center">
-            {% if not db %}
-                <h2 class="color-caramel">Aucun produit ne correspond aux critères de recherche... :(</h2>
-            {% else %}
-                <div id="portfolio">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <span style="margin-bottom: 20px;"></span>
-                            {% if product_id %}
-                                <h2 class="color-caramel">Vous pouvez remplacer cet aliment par :</h2>
-                            {% else %}
-                                <h2 class="color-caramel">Plusieurs résultats correspondent à vos critères de recherche :</h2>
-                            {% endif %}
-
-
-                            {% for product in db %}
-                                <div class="col-lg-4 col-xs-12">
-                                    <div class="product_presentation">
-                                        <div class="overlay">
-                                            {% if product_id %}
-                                                <a class="text-content" href="/catalogue/{{ product.code }}/" title="{{ product.product_name }}">
-                                            {% else %}
-                                                <a class="text-content" href="/catalogue/?user_search={{ product.code }}" title="{{ product.product_name }}">
-                                            {% endif %}
-                                                <img src="{{ product.picture_url }}" alt="{{ product.product_name }}" width="100" height="100"/>
-                                                <div class="text-rightup font-circle back-color-{{ product.nutrition_grades|upper }}">{{ product.nutrition_grades|upper }}</div>
-                                            </a>
-                                        </div>
-
-                                        <p class="product_name">{{ product.product_name }}</p>
-                                        {% if display_save_button %}
-                                            <form method="POST" action="{% url 'save' %}" accept-charset="utf8">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="substitute_id" value="{{ product.code }}">
-                                                <input type="hidden" name="product_search_id" value="{{ product_id.code }}">
-                                                {% if product.display_save %}
-                                                    <button type="submit" class="icon save_button"><i class="fa fa-save"></i> Sauvegarder</button>
-                                                {% else %}
-                                                    <button type="submit" class="icon save_button"><i class="fa fa-trash"></i> Supprimer</button>
-                                                {% endif %}
-                                            </form>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% empty %}
-                                <p>Aucun produit trouvé.</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-
-        {% if paginate %}
-            <h3>
-                {% if db.has_previous %}
-                    <a href="?user_search={{ user_search }}&page=1">&laquo;</a>
-                    <a href="?user_search={{ user_search }}&page={{ db.previous_page_number }}">&lsaquo;</a>
-                {% endif %}
-                {{ db.number }} / {{ db.paginator.num_pages }}
-                {% if db.has_next %}
-                    <a href="?user_search={{ user_search }}&page={{ db.next_page_number }}">&rsaquo;</a>
-                    <a href="?user_search={{ user_search }}&page={{ db.paginator.num_pages }}">&raquo;</a>
-                {% endif %}
-            </h3>
-        {% endif %}
-
-                </div>
-            </div>
-        </div>
-    </header>
-
+    {% include 'PurBeurre/templates/layouts/header.html' %}
 {% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+    <div class="background-content">
+        <div class="container">
+            <div class="row align-items-center justify-content-center text-center">
+                <span style="margin-bottom: 20px;"></span>
+                <div class="col align-self-end">
+
+            {% for msg in msgs %}
+                <h2 class="color-caramel">{{msg}}</h2>
+                <hr class="divider my-4" />
+            {% endfor %}
+
+            {% if db %}
+                <!-- Product presentation -->
+                <div class="row">
+                    {% for product in db %}
+                        <div class="col-lg-4 col-xs-12">
+                            {% include 'PurBeurre/templates/layouts/product_presentation.html' %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if paginate %}
+                    <h3>
+                        {% if db.has_previous %}
+                            <a href="?user_search={{ page_title }}&page=1">&laquo;</a>
+                            <a href="?user_search={{ page_title }}&page={{ db.previous_page_number }}">&lsaquo;</a>
+                        {% endif %}
+                        {{ db.number }} / {{ db.paginator.num_pages }}
+                        {% if db.has_next %}
+                            <a href="?user_search={{ page_title }}&page={{ db.next_page_number }}">&rsaquo;</a>
+                            <a href="?user_search={{ page_title }}&page={{ db.paginator.num_pages }}">&raquo;</a>
+                        {% endif %}
+                    </h3>
+                {% endif %}
+            {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
