@@ -9,6 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
 
+# TODO: comment voir la fiche OFF d'un produit non substitué ?
+
 # Create your views here.
 def result(request):
     if request.method != 'GET':
@@ -18,10 +20,10 @@ def result(request):
     print(user_search)
     all_objects = []
     context = {
-        'user_search': user_search,
         'product_id': None,
         'paginate': False,
         'display_save_button': True,
+        'msgs': [],
     }
 
     # search by code then by name
@@ -33,13 +35,18 @@ def result(request):
         if product_id.count() > 1:
             all_objects = product_id
             product_id = None
+            context['page_title'] = user_search
+            context['msgs'].append('Plusieurs résultats correspondent à vos critères de recherche :')
         else:
             product_id = product_id[0]
             context['product_id'] = product_id
+            context['msgs'].append('Vous pouvez remplacer cet aliment par :')
             all_objects = ordered_substitute_food(product_id.code)
 
         # display paginate
         all_objects, context['paginate'] = paginate(request, all_objects)
+    else:
+        context['msgs'].append('Aucun produit ne correspond aux critères de recherche... :(')
 
     # display save_button
     display_save_button = product_id and request.user.is_authenticated
