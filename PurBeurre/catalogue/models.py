@@ -72,19 +72,13 @@ class Product(models.Model):
 
 
 class Favorite_product(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='source_product')
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='search_product')
     substitute = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='substitude_product')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def save(self, **kwargs):
-        print('product save !')
-        for k, v in kwargs.items():
-            setattr(self, k, v)
-        super().save()
 
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['product', 'substitute'],
+                fields=['product', 'substitute', 'user'],
                 name='favorite_unique')
         ]
