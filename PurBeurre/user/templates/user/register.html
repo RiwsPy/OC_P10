@@ -1,4 +1,4 @@
-{% extends 'templates/layouts/base.html' %}
+{% extends 'PurBeurre/templates/layouts/base.html' %}
 
 {% block title %}Inscription{% endblock %}
 
@@ -35,9 +35,12 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">S'inscrire</button>
-
-                    <!--<input class="btn-auth btn-primary" type="submit" value="S'inscrire">-->
                 </form>
+                </div>
+                <div>
+                    <hr class="divider" />
+                    <p class="color-caramel" style="margin-bottom: 0;">Déjà un compte ?</p>
+                    <a href="{% url 'connexion' %}">Se connecter</a>
                 </div>
             </div>
         </div>
