@@ -55,6 +55,63 @@
   }
 }
 
+header.no-home-top {
+  /* rooibos to biscuit */
+  background: linear-gradient(to bottom, rgba(196, 85, 37, 0.8) 0%, rgba(232, 167, 93, 0.8) 100%), url("../img/accueil.jpeg");
+  background-position: center;
+  height: 40%;
+}
+
+.title-box {
+  width: fit-content;
+  margin: auto;
+  margin-top: 100px;
+  background-color: rgba(52, 90, 97, 0.8);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+  font-family: "Open Sans", sans-serif;
+  color: var(--bs-biscuit);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.background-content {
+  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../img/content-little.jpeg");
+  background-position: center;
+}
+
+.title_product {
+  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
+  height: 100px;
+}
+
+.product_presentation {
+  background: linear-gradient(to bottom, rgba(232, 167, 93, 0.8) 0%, rgba(232, 167, 93, 0.8) 100%);
+  border-radius: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+.product_name {
+  color: var(--bs-moules);
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.product_presentation .save_button {
+  background-color: var(--bs-caramel);
+  border-radius: 10px;
+}
+
+.overlay:hover {
+  opacity: 0.7;
+}
+
+.overlay img {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
 .text-content
 {
   position: relative;
@@ -11017,13 +11074,15 @@ hr.divider-light {
   transition: background-color 0.2s ease;
 }
 #mainNav .navbar-brand {
-  font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Scope One", sans-serif;
+  /*font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";*/
   font-weight: 700;
   color: #212529;
 }
 #mainNav .navbar-nav .nav-item .nav-link {
   color: #6c757d;
-  font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Scope One", sans-serif;
+  /*font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";*/
   font-weight: 700;
   font-size: 0.9rem;
   padding: 0.75rem 0;
@@ -11116,25 +11175,6 @@ header.masthead_sec {
 }
 header.masthead_sec h1, header.masthead_sec .h1 {
   font-size: 2.25rem;
-}
-@media (min-width: 992px) {
-  header.masthead_sec {
-    height: 100vh;
-    min-height: 40rem;
-    padding-top: 4.5rem;
-    padding-bottom: 0;
-  }
-  header.masthead_sec p {
-    font-size: 1.15rem;
-  }
-  header.masthead_sec h1, header.masthead_sec .h1 {
-    font-size: 3rem;
-  }
-}
-@media (min-width: 1200px) {
-  header.masthead_sec h1, header.masthead_sec .h1 {
-    font-size: 3.5rem;
-  }
 }
 
 #portfolio .container-fluid, #portfolio .container-sm, #portfolio .container-md, #portfolio .container-lg, #portfolio .container-xl, #portfolio .container-xxl {
