@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
-from catalogue.models import Favorite_product
+from catalogue.models import Favorite_product, Product
 from collections import defaultdict
+import re
 
 # Create your views here.
 def index(request):
@@ -17,14 +18,21 @@ def index(request):
         elif request.method == 'POST':
             return user_login(request)
 
-def connexion(request):
-    print('connexion')
-    context = {'form': UserForm()}
-    return render(request, 'user/connexion.html', context=context)
+def connexion(request, context={}):
+    if request.user.is_authenticated:
+        return account(request)
 
+    print(context.get('msgs'))
+    context['form'] = UserForm()
+    return render(request, 'user/connexion.html', context)
+
+@login_required(login_url='/user/login/')
 def account(request):
     print('account')
-    return render(request, 'user/account.html')
+    context = {
+        'page_title': request.user.username,
+    }
+    return render(request, 'user/account.html', context)
 
 def user_login(request):
     print('user_login')
@@ -35,21 +43,25 @@ def user_login(request):
         if user is not None:
             login(request, user)
         else:
-            return connexion(HttpRequest(), context={'msg': 'Compte inconnu.'})
+            return connexion(request, context={'msgs': ['Compte inconnu.']})
 
     return redirect('home')
 
+@login_required(login_url='/catalogue/home/')
 def user_logout(request):
     print('user_logout')
     if request.user.is_authenticated:
         logout(request)
     return redirect('home')
 
+regex_remove_tag = re.compile(r'<[^>]*>')
+
 def register(request):
     if request.user.is_authenticated:
         print('user déjà connecté')
         return redirect('home')
 
+    context = {'msgs': []}
     if request.method == 'GET':
         form = UserForm()
     else:
@@ -61,24 +73,47 @@ def register(request):
             password = form.cleaned_data['password1']
             user = authenticate(request, username=username, password=password)
             login(request, user)
-            print('le compte a été créé avec succès.')
-            return redirect('home')
+            print('Le compte a été créé avec succès.')
+            context = {'msgs' : [f'Le compte {user.username} a été créé avec succès. Bienvenue !']}
+            return redirect('home', context=context)
 
-        print('compte non créé')
+        context['msgs'].append('Compte non créé.')
 
-    return render(request, 'user/register.html', context={'form': form})
+    for msg in form.errors.values():
+        msg = regex_remove_tag.sub('', str(msg))
+        context['msgs'].append(msg)
+
+    context['form'] = form
+    return render(request, 'user/register.html', context)
 
 @login_required(login_url='/user/login/')
 def favorite(request):
-    ret = Favorite_product.objects.filter(user=request.user)
+    context= {}
+    user_search = request.GET.get('user_search')
+    if not user_search: # show Menu 1: product to substitute
+        data = Favorite_product.objects.filter(user=request.user)
 
-    product_set = set()
-    for product in ret:
-        product_set.add(product.product)
+        db = [product
+            for product in data]
 
-    dict_ret = {}
-    for product_id in product_set:
-        dict_ret[product_id] = ret.filter(product=product_id)
+        if not db:
+            context['msgs'] = "Aucun produit n'a encore été sauvegardé."
 
-    context= {'db': dict_ret, 'page_title': 'Mes aliments'}
-    return render(request, 'user/favorite.html', context)
+        context['db'] = db
+        context['in_favorite_menu'] = True
+    else: # show Menu 2: display substitute
+        product_search = Product.objects.get(code=user_search)
+        data = Favorite_product.objects.filter(
+            user=request.user,
+            product=user_search)
+
+        context['product_id'] = product_search
+        context['db'] = [product.substitute
+            for product in data]
+
+    context['page_title'] = 'Mes aliments'
+    context['display_save_button'] = True
+
+    return render(request, 'catalogue/result.html', context)
+
+    #return render(request, 'user/favorite.html', context)

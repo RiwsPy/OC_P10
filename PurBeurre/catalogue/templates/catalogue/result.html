@@ -13,16 +13,13 @@
                 <span style="margin-bottom: 20px;"></span>
                 <div class="col align-self-end">
 
-            {% for msg in msgs %}
-                <h2 class="color-caramel">{{msg}}</h2>
-                <hr class="divider my-4" />
-            {% endfor %}
+            {% include 'PurBeurre/templates/layouts/message.html' %}
 
             {% if db %}
                 <!-- Product presentation -->
-                <div class="row">
+                <div class="row justify-content-center">
                     {% for product in db %}
-                        <div class="col-lg-4 col-xs-12">
+                        <div class="col-lg-4 col-md-6 col-xs-12">
                             {% include 'PurBeurre/templates/layouts/product_presentation.html' %}
                         </div>
                     {% endfor %}
@@ -31,13 +28,13 @@
                 {% if paginate %}
                     <h3>
                         {% if db.has_previous %}
-                            <a href="?user_search={{ page_title }}&page=1">&laquo;</a>
-                            <a href="?user_search={{ page_title }}&page={{ db.previous_page_number }}">&lsaquo;</a>
+                            <a href="?user_search={{ user_search }}&page=1">&laquo;</a>
+                            <a href="?user_search={{ user_search }}&page={{ db.previous_page_number }}">&lsaquo;</a>
                         {% endif %}
                         {{ db.number }} / {{ db.paginator.num_pages }}
                         {% if db.has_next %}
-                            <a href="?user_search={{ page_title }}&page={{ db.next_page_number }}">&rsaquo;</a>
-                            <a href="?user_search={{ page_title }}&page={{ db.paginator.num_pages }}">&raquo;</a>
+                            <a href="?user_search={{ user_search }}&page={{ db.next_page_number }}">&rsaquo;</a>
+                            <a href="?user_search={{ user_search }}&page={{ db.paginator.num_pages }}">&raquo;</a>
                         {% endif %}
                     </h3>
                 {% endif %}

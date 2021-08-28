@@ -1,78 +1,59 @@
 {% extends 'PurBeurre/templates/layouts/base.html' %}
-{% load static %}
+
 {% block title %}Aliment{% endblock %}
 
 {% block header %}
-    <header class="masthead">
-        <div class="container">
-            <div class="row align-items-center justify-content-center text-center">
-                <div class="col align-self-end">
-                    {% if msg %}
-                        <h1 class="text-uppercase text-white font-weight-bold">{{ msg }}</h1>
-                        <hr class="divider my-4" />
-                    {% endif %}
+    {% include 'PurBeurre/templates/layouts/header.html' %}
+{% endblock %}
 
-        {% if id %}
-            <div id="portfolio">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <a class="portfolio-box" href="{{ id.picture_url }}" title="{{ id.product_name }}">
-                                <img src="{{ id.picture_url }}" alt="food picture" height="200" width="200"/>
-                                <div class="portfolio-box-caption">
-                                    <div class="project-category text-white-50">{{ id.product_name }}</div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fluid" style="margin-top: 20px;">
-                <div class="row">
+{% block content %}
+    {% include 'PurBeurre/templates/layouts/message.html' %}
+
+    {% if product_id %}
+        <div class="background-content">
+            <div class="container">
+                <div class="row justify-content-center text-center">
+                    <span style="margin-bottom: 20px;"></span>
                     <!-- IMG NUTRI-SCORE -->
-                    <div class="col-6">
+                    <div class="col-6 xs-12">
                         <h3 class="color-biscuit">Nutri-score :</h3>
-                        <img src="https://static.openfoodfacts.org/images/misc/nutriscore-{{ id.nutrition_grades|lower }}.svg" title="Nutri-Score {{ id.nutrition_grades|upper }}" alt="Nutri-score"/>
+                        <img src="https://static.openfoodfacts.org/images/misc/nutriscore-{{ product_id.nutrition_grades|lower }}.svg" title="Nutri-Score {{ product_id.nutrition_grades|upper }}" alt="Nutri-score"/>
                     </div>
-                    <div class="col-6 nutri_table">
+                    <div class="col-6 xs-12 nutri_table">
                         <h3 class="font-weight-bold color-biscuit">Repères nutritionnels pour 100g :</h3>
                         <table>
                             <tr>
-                                <th>Energie :</th><td>{{ id.energy_value }}</td>
+                                <th>Energie :</th><td>{{ product_id.energy_value|floatformat:0 }} kcal</td>
                             </tr>
                             <tr>
-                                <th>Matières grasses :</th><td>{{ id.fat_value }}</td>
+                                <th>Matières grasses :</th><td>{{ product_id.fat_value }} g</td>
                             </tr>
                             <tr>
-                                <th>Glucides :</th><td>{{ id.sugar_value }}</td>
+                                <th>Glucides :</th><td>{{ product_id.sugar_value }} g</td>
                             </tr>
                             <tr>
-                                <th>Fibres alimentaires :</th><td>{{ id.fiber_value }}</td>
+                                <th>Fibres alimentaires :</th><td>{{ product_id.fiber_value }} g</td>
                             </tr>
                             <tr>
-                                <th>Protéines :</th><td>{{ id.protein_value }}</td>
+                                <th>Protéines :</th><td>{{ product_id.protein_value }} g</td>
                             </tr>
                             <tr>
-                                <th>Sel :</th><td>{{ id.salt_value }}</td>
+                                <th>Sel :</th><td>{{ product_id.salt_value }} g</td>
                             </tr>
                         </table>
                     </div>
-                </div>
-            </div>
 
-            <hr class="divider">
-            <a href="{{ id.off_url }}"
-            class="btn btn-outline-info btn-block"
-            role="button"
-            style="width: 25%; margin-bottom: 30px;"
-            target="_blank">Voir la fiche d'OpenFoodFacts</a>
-        {% endif %}
-
+                    <div class="col-12">
+                        <hr class="divider">
+                        <a href="{{ product_id.off_url }}"
+                            class="btn btn-outline-info btn-block"
+                            role="button"
+                            style="width: 25%; margin-bottom: 30px;"
+                            target="_blank">Voir la fiche d'OpenFoodFacts</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </header>
 
+    {% endif %}
 {% endblock %}
-
-{% block content %}{% endblock %}
