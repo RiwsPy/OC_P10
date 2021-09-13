@@ -13,6 +13,9 @@ psycopg2-binary = "*"
 django-debug-toolbar = "*"
 coverage = "*"
 selenium = "*"
+whitenoise = "*"
+dj-database-url = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
