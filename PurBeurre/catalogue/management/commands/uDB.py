@@ -10,8 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options) -> None:
         self.call_api()
         self.stdout.write(self.style.SUCCESS('Mise à jour de la base de données réussie.'))
-        #self.stdout.write(self.style.ERROR('Error'))
-
+        #self.stdout.write(self.style.ERROR('Error')
 
     def call_api(self) -> None:
         """
@@ -31,19 +30,23 @@ class Command(BaseCommand):
             if req.status_code == 200:
                 results_json = req.json()
 
-                cat = Category()
-                cat.name = category[:200]
-                cat.save()
+                cat = self.save_category(category)
 
                 for product_data in results_json["products"]:
                     if not product_data["code"] in code_set:
                         code_set.add(product_data["code"])
-                        pro = Product()
-                        pro.clean(product_data)
-                        if pro.is_clean():
-                            pro.save()
-                            pro.categories.add(cat)
-                            pro.save()
+                        self.save_product(product_data, cat)
 
+    def save_category(self, category_name: str) -> Category:
+        cat = Category()
+        cat.name = category_name[:200]
+        cat.save()
+        return cat
 
-
+    def save_product(self, product_data: dict, cat: Category) -> None:
+        pro = Product()
+        pro.clean(product_data)
+        if pro.is_clean():
+            pro.save()
+            pro.categories.add(cat)
+            pro.save()

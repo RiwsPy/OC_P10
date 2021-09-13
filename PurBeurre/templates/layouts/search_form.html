@@ -1,13 +1,17 @@
-<form action="{% url 'home' %}" method="get">
-    <label for="product_input"></label>
-    <input type="search"
-        name="user_search"
-        id="product_input"
-        placeholder="Produit"
-        size="30"
-        autofocus
-        required
-        spellcheck="false">
-    <!--<input type="submit" value="Envoyer" />-->
-    <button type="submit" class="btn btn-outline-primary">Chercher</button>
+<form action="{% url 'result' %}" method="get">
+    <div class="row collapse">
+        <div class="column">
+            <label for="product_input"></label>
+            <input type="search"
+                name="user_search"
+                id="product_input"
+                placeholder="Produit"
+                size="30"
+                autofocus
+                required
+                spellcheck="false"
+                autocomplete="off">
+            <button id="search_button" type="submit" class="btn btn-outline-primary">Chercher</button>
+        </div>
+    </div>
 </form>

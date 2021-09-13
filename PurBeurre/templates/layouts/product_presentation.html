@@ -1,10 +1,14 @@
 <div class="product_presentation">
     <div class="overlay">
-        {% if product_id %}
+        {% if product_id %} <!-- Details menu -->
             <a class="text-content"
                 href="/catalogue/{{ product.code }}/"
                 title="{{ product.product_name }}">
-        {% else %}
+        {% elif in_favorite_menu %} <!-- Favorite menu 1 -->
+            <a class="text-content"
+                href="/user/favorite/?user_search={{ product.code }}"
+                title="{{ product.product_name }}">
+        {% else %} <!-- Multiple choice menu -->
             <a class="text-content"
                 href="/catalogue/?user_search={{ product.code }}"
                 title="{{ product.product_name }}">
@@ -26,11 +30,11 @@
             <input type="hidden" name="substitute_id" value="{{ product.code }}">
             <input type="hidden" name="product_search_id" value="{{ product_id.code }}">
             {% if product.display_save %}
-                <button type="submit" class="icon save_button">
+                <button id="save_button" type="submit" class="icon save_button">
                     <i class="fa fa-save"></i> Sauvegarder
                 </button>
             {% else %}
-                <button type="submit" class="icon save_button">
+                <button id="delete_button" type="submit" class="icon save_button">
                     <i class="fa fa-trash"></i> Supprimer
                 </button>
             {% endif %}

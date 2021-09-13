@@ -1,5 +1,6 @@
-URL_SEARCH = "https://fr.openfoodfacts.org/cgi/search.pl?"
-URL_PRODUCT = "https://fr.openfoodfacts.org/product"
+URL_OFF = "https://fr.openfoodfacts.org/"
+URL_SEARCH = URL_OFF + "cgi/search.pl?"
+URL_PRODUCT = URL_OFF + "product"
 HEADERS = {"User-Agent": "P8_PurBeurre - Version 0.1"}
 
 

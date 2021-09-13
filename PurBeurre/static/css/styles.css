@@ -59,7 +59,7 @@ header.no-home-top {
   /* rooibos to biscuit */
   background: linear-gradient(to bottom, rgba(196, 85, 37, 0.8) 0%, rgba(232, 167, 93, 0.8) 100%), url("../img/accueil.jpeg");
   background-position: center;
-  height: 40%;
+  height: 200px;
 }
 
 .title-box {
@@ -84,6 +84,12 @@ header.no-home-top {
   height: 100px;
 }
 
+.print-data {
+  width: fit-content;
+  background-color: rgb(204, 193, 193);
+
+}
+
 .product_presentation {
   background: linear-gradient(to bottom, rgba(232, 167, 93, 0.8) 0%, rgba(232, 167, 93, 0.8) 100%);
   border-radius: 30px;
@@ -100,6 +106,11 @@ header.no-home-top {
 .product_presentation .save_button {
   background-color: var(--bs-caramel);
   border-radius: 10px;
+  margin-bottom: 2px;
+}
+
+.product_presentation .save_button:hover {
+  background-color: var(--bs-rooibos);
 }
 
 .overlay:hover {
@@ -180,7 +191,9 @@ header.no-home-top {
   border-bottom: 1px solid black;
 }
 
-
+.text-justify {
+  text-align: justify !important;
+}
 
 body {
   margin: 0;
