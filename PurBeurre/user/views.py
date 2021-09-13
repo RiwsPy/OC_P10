@@ -24,7 +24,7 @@ def connexion(request, context={}):
 
     print(context.get('msgs'))
     context['form'] = UserForm()
-    return render(request, 'user/connexion.html', context)
+    return render(request, 'user/login.html', context)
 
 @login_required(login_url='/user/login/')
 def account(request):
@@ -47,7 +47,7 @@ def user_login(request):
 
     return redirect('home')
 
-@login_required(login_url='/catalogue/home/')
+@login_required(login_url='/')
 def user_logout(request):
     print('user_logout')
     if request.user.is_authenticated:
@@ -66,7 +66,6 @@ def register(request):
         form = UserForm()
     else:
         form = UserForm(request.POST)
-        print(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']
@@ -74,8 +73,7 @@ def register(request):
             user = authenticate(request, username=username, password=password)
             login(request, user)
             print('Le compte a été créé avec succès.')
-            context = {'msgs' : [f'Le compte {user.username} a été créé avec succès. Bienvenue !']}
-            return redirect('home', context=context)
+            return redirect('home')
 
         context['msgs'].append('Compte non créé.')
 
@@ -93,8 +91,8 @@ def favorite(request):
     if not user_search: # show Menu 1: product to substitute
         data = Favorite_product.objects.filter(user=request.user)
 
-        db = [product
-            for product in data]
+        db = set(product.product
+            for product in data)
 
         if not db:
             context['msgs'] = "Aucun produit n'a encore été sauvegardé."
