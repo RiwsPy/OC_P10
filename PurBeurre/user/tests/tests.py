@@ -107,4 +107,3 @@ class User_without_auto_login(TestCase):
         self.assertFalse(response.context['user'].is_authenticated)
         self.assertTemplateUsed(response, 'user/register.html')
     
-    
