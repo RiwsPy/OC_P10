@@ -39,13 +39,16 @@
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="/"><button type="button" class="btn btn-warning" title="Accueil" style="background-color: rgb(204, 193, 193);">Chercher</button></a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="/"><button type="button" class="btn btn-warning" title="Accueil" style="background-color: rgb(204, 193, 193);">Chercher</button></a></li>-->
+                        <li class="nav-item d-flex align-items-center">
+                            {% include 'PurBeurre/templates/layouts/search_form_nav.html' %}
+                        </li>
                         {% if user.is_authenticated %}
-                            <li class="nav-item"><a class="nav-link" href="/user/connexion/"><button type="button" class="btn btn-warning" title="Mon compte"><i class="fas fa-user"></i></button></a></li>
-                            <li class="nav-item"><a class="nav-link" href="/user/favorite/"><button type="button" class="btn btn-warning" title="Mes aliments"><img src="{% static 'img/carrot.png' %}" width="20" height="20" alt="Food menu"/></button></a></li>
-                            <li class="nav-item"><a class="nav-link" href="/user/logout/"><button type="button" class="btn btn-warning" title="Déconnexion"><i class="fas fa-sign-out-alt"></i></button></a></li>
+                            <li class="nav-item"><a class="nav-link" href="/user/login/"><button type="button" class="btn btn-warning" title="Mon compte"><i class="fas fa-user"></i></button></a></li>
+                            <li class="nav-item"><a class="nav-link" href="/user/favorite/"><button type="button" class="btn btn-warning" title="Mes aliments" id="favorite_button"><img src="{% static 'img/carrot.png' %}" width="20" height="20" alt="Food menu"/></button></a></li>
+                            <li class="nav-item"><a class="nav-link" href="/user/logout/"><button type="button" class="btn btn-warning" title="Déconnexion" id="logout_button"><i class="fas fa-sign-out-alt"></i></button></a></li>
                         {% else %}
-                            <li class="nav-item"><a class="nav-link" href="/user/connexion/"><button type="button" class="btn btn-warning" title="Créer un compte"><i class="fas fa-user"></i></button></a></li>
+                            <li class="nav-item"><a class="nav-link" href="/user/login/"><button id="login_button" type="button" class="btn btn-warning" title="Créer un compte"><i class="fas fa-user"></i></button></a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -66,16 +69,21 @@
         {% block content %}
             <!-- Team Section Start -->
             <div id="portfolio">
-                <h2 class="text-center">Colette et Remy</h2>
-                <p class="text-muted mb-5 text-center">
-                    Nous sommes une jeune startup fondée par Remy et Colette Tatou, deux restaurateurs de renom. Notre restaurant, situé à Montmartre (Paris), compte une cinquantaine de couverts et ne désemplit pas. Notre spécialité, la ratatouille, nous attire une clientèle internationale charmée par les délices de ce plat typique.
-                </p>
-                <p class="text-muted mb-5 text-center">
-                    Amoureux de la gastronomie française, nous travaillons quotidiennement avec les meilleurs produits du terroir. Pourtant il est parfois bien difficile de trouver une alternative saine aux produits que nous consommons tous les jours.
-                </p>
-                <p class="text-muted mb-5 text-center">
-                    C'est ainsi que cette germa l'idée de PurBeurre : trouvez des substituts sains en un clic !
-                </p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center" style="margin-top: 30px;">
+                        <h2 class="text-center">Colette et Remy</h2>
+                        <hr class="divider" />
+                        <p class="text-muted mb-5 fs-5 text-justify">
+                            Nous sommes une jeune startup fondée par Remy et Colette Tatou, deux restaurateurs de renom. Notre restaurant, situé à Montmartre (Paris), compte une cinquantaine de couverts et ne désemplit pas. Notre spécialité, la ratatouille, nous attire une clientèle internationale charmée par les délices de ce plat typique.
+                        </p>
+                        <p class="text-muted mb-5 fs-5 text-justify">
+                            Amoureux de la gastronomie française, nous travaillons quotidiennement avec les meilleurs produits du terroir. Pourtant il est parfois bien difficile de trouver une alternative saine aux produits que nous consommons tous les jours.
+                        </p>
+                        <p class="text-muted mb-5 fs-5 text-justify">
+                            C'est ainsi que cette germa l'idée de PurBeurre : trouver des substituts sains en un clic !
+                        </p>
+                    </div>
+                </div>
                 <div class="container-fluid p-0">
                     <div class="row g-0">
                         <div class="col-md-6 col-xs-12">
@@ -105,7 +113,7 @@
             <section class="page-section" id="contact">
                 <div class="container px-4 px-lg-5">
                     <div class="row gx-4 gx-lg-5 justify-content-center">
-                        <div class="col-lg-8 col-xl-6 text-center">
+                        <div class="col-xs-12 col-md-6 text-center">
                             <h2 class="mt-0">Contactez-nous !</h2>
                             <hr class="divider" />
                             <p class="text-muted mb-5">Envie de nous rencontrer, de papoter autour d'un bon plat chaud ? Voici nos coordonnées !</p>
@@ -133,7 +141,6 @@
           {% endblock %}
 
         <!-- Footer-->
-        <div style="">
         <footer class="bg-light py-5">
             <div class="container px-4 px-lg-5">
                 <div class="row justify-content-center">

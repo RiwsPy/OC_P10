@@ -11,6 +11,8 @@ django-extensions = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
 django-debug-toolbar = "*"
+coverage = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.8"

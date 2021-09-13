@@ -2,7 +2,9 @@ from django.test import TestCase
 from django.urls.base import reverse
 from catalogue.models import Product, Category
 from user.tests.tests import User_test, User_without_auto_login
+from user.tests.test_functionnal import Test_favorite_product
 from django.contrib.auth.models import User
+from catalogue.management.commands.enums import URL_OFF
 
 # Create your tests here.
 
@@ -18,7 +20,7 @@ class HomePage(TestCase):
             nova_groups=4,
             nutrition_grades="D",
             stores="",
-            picture_url="https://fr.openfoodfacts.org/images/products/317/658/201/6252/front_fr.59.400.jpg",
+            picture_url= URL_OFF + "images/products/317/658/201/6252/front_fr.59.400.jpg",
             eco_score="C",
             energy_value=10.0,
             fat_value=12.2,
@@ -33,7 +35,7 @@ class HomePage(TestCase):
             nova_groups=4,
             nutrition_grades="B",
             stores="",
-            picture_url="https://fr.openfoodfacts.org/images/products/359/669/013/6046/front_fr.39.400.jpg",
+            picture_url= URL_OFF + "images/products/359/669/013/6046/front_fr.39.400.jpg",
             eco_score="D",
             energy_value=32.0,
             fat_value=42.2,
@@ -93,7 +95,7 @@ class HomePage(TestCase):
             'nova_groups':4,
             'nutrition_grades':"B",
             'stores':"",
-            'picture_url':"https://fr.openfoodfacts.org/images/products/359/669/013/6046/front_fr.39.400.jpg",
+            'picture_url': URL_OFF + "images/products/359/669/013/6046/front_fr.39.400.jpg",
             'eco_score':"D",
             'energy_value':32.0,
             'fat_value':42.2,
