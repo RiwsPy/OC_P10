@@ -152,6 +152,8 @@ INTERNAL_IPS = ['127.0.0.1']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+FIXTURE_DIRS = ['catalogue']
+
 if os.getenv('ENV') == 'PRODUCTION':
 
     # Simplified static file serving.
