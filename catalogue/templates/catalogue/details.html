@@ -1,13 +1,13 @@
-{% extends 'PurBeurre/templates/layouts/base.html' %}
+{% extends 'templates/layouts/base.html' %}
 
 {% block title %}Aliment{% endblock %}
 
 {% block header %}
-    {% include 'PurBeurre/templates/layouts/header.html' %}
+    {% include 'templates/layouts/header.html' %}
 {% endblock %}
 
 {% block content %}
-    {% include 'PurBeurre/templates/layouts/message.html' %}
+    {% include 'templates/layouts/message.html' %}
 
     {% if product_id %}
         <div class="background-content">

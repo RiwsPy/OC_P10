@@ -41,7 +41,7 @@
                     <ul class="navbar-nav ms-auto my-2 my-lg-0">
                         <!--<li class="nav-item"><a class="nav-link" href="/"><button type="button" class="btn btn-warning" title="Accueil" style="background-color: rgb(204, 193, 193);">Chercher</button></a></li>-->
                         <li class="nav-item d-flex align-items-center">
-                            {% include 'PurBeurre/templates/layouts/search_form_nav.html' %}
+                            {% include 'templates/layouts/search_form_nav.html' %}
                         </li>
                         {% if user.is_authenticated %}
                             <li class="nav-item"><a class="nav-link" href="/user/login/"><button type="button" class="btn btn-warning" title="Mon compte"><i class="fas fa-user"></i></button></a></li>

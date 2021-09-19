@@ -83,7 +83,7 @@ class User_without_auto_login(TestCase):
     def test_logout(self):
         response = self.client.get(reverse('logout'))
         self.assertEqual(response.status_code, 302)
-        #self.assertTemplateUsed(response, 'PurBeurre/templates/layouts/base.html')
+        #self.assertTemplateUsed(response, 'templates/layouts/base.html')
 
     def test_register_user(self):
         data = {

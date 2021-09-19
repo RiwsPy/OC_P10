@@ -1,9 +1,9 @@
-{% extends 'PurBeurre/templates/layouts/base.html' %}
+{% extends 'templates/layouts/base.html' %}
 
 {% block title %}Résultats{% endblock %}
 
 {% block header %}
-    {% include 'PurBeurre/templates/layouts/header.html' %}
+    {% include 'templates/layouts/header.html' %}
 {% endblock %}
 
 {% block content %}
@@ -13,14 +13,14 @@
                 <span style="margin-bottom: 20px;"></span>
                 <div class="col align-self-end">
 
-            {% include 'PurBeurre/templates/layouts/message.html' %}
+            {% include 'templates/layouts/message.html' %}
 
             {% if db %}
                 <!-- Product presentation -->
                 <div class="row justify-content-center">
                     {% for product in db %}
                         <div class="col-lg-4 col-md-6 col-xs-12">
-                            {% include 'PurBeurre/templates/layouts/product_presentation.html' %}
+                            {% include 'templates/layouts/product_presentation.html' %}
                         </div>
                     {% endfor %}
                 </div>
