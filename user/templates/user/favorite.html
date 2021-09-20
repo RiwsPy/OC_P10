@@ -2,10 +2,6 @@
 
 {% block title %}Mes aliments{% endblock %}
 
-{% block header %}
-    {% include 'templates/layouts/header.html' %}
-{% endblock %}
-
 {% block content %}
     <ol>
         {% for product, query_set in db.items %}

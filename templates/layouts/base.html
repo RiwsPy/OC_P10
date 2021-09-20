@@ -58,12 +58,7 @@
 
         <!-- Masthead-->
         {% block header %}
-        <header class="masthead">
-            <div class="container px-4 px-lg-5 h-50">
-                <div class="row gx-4 gx-lg-5 h-50 align-items-center justify-content-center text-center">
-                </div>
-            </div>
-        </header>
+            {% include 'templates/layouts/header.html' %}
         {% endblock %}
 
         {% block content %}
