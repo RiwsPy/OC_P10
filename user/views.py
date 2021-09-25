@@ -86,7 +86,7 @@ def register(request):
 
 @login_required(login_url='/user/login/')
 def favorite(request):
-    context= {}
+    context= {'msgs': []}
     user_search = request.GET.get('user_search')
     if not user_search: # show Menu 1: product to substitute
         data = Favorite_product.objects.filter(user=request.user)
@@ -95,7 +95,7 @@ def favorite(request):
             for product in data)
 
         if not db:
-            context['msgs'] = "Aucun produit n'a encore été sauvegardé."
+            context['msgs'].append("Aucun produit n'a encore été sauvegardé.")
 
         context['db'] = db
         context['in_favorite_menu'] = True

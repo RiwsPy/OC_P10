@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from .enums import HEADERS, PAYLOAD, CATEGORIES, URL_SEARCH
 import requests
-from catalogue.models import Product, Category
+from catalogue.models import Product, Category, Favorite_product
 import json
 
 class Command(BaseCommand):
@@ -21,6 +21,7 @@ class Command(BaseCommand):
         code_set = set()
         print("Mise à jour de la base de données...")
         params = PAYLOAD.copy()
+        Favorite_product.objects.all().delete()
         Category.objects.all().delete()
         Product.objects.all().delete()
 

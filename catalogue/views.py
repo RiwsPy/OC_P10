@@ -2,7 +2,7 @@ from django.core import paginator
 from django.db.models.query import QuerySet, EmptyQuerySet
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Favorite_product, Product
+from .models import Category, Favorite_product, Product
 from django.http import Http404
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.exceptions import ObjectDoesNotExist
