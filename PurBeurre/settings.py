@@ -17,7 +17,8 @@ import dj_database_url
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.getenv('ENV') == 'PRODUCTION':
-    DEBUG = False
+    # TODO: /!
+    DEBUG = True
 else:
     load_dotenv()
     DEBUG = True
