@@ -151,14 +151,14 @@ INTERNAL_IPS = ['127.0.0.1']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-#FIXTURE_DIRS = ['catalogue']
+FIXTURE_DIRS = ['catalogue', 'user']
 
 if os.getenv('ENV') == 'PRODUCTION':
 
     # Simplified static file serving.
     # https://warehouse.python.org/project/whitenoise/
-    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    #STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
