@@ -2,12 +2,16 @@ from django.db import models
 from catalogue.management.commands.enums import OFF_TO_DB, OFF_TO_DB_NUTRIMENTS, URL_PRODUCT
 from django.contrib.auth.models import User
 from django.db.models import UniqueConstraint
+from typing import Any
 
 # Produit
 # Table d'association Produit / Catégorie
 
 class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 # Create your models here.
@@ -42,17 +46,19 @@ class Product(models.Model):
         for attr in OFF_TO_DB.values():
             if getattr(self, attr, None) is None:
                 return False
-        if len(self.eco_score) > 1: # 'unknown', 'not-applicable'
-            return False
-        return True
+        return 'a' <= self.eco_score.lower() <= 'e'
 
     def clean(self, data: dict) -> None:
+        """
+            Initialize item with data
+        """
         for attr_OFF, attr_DB in OFF_TO_DB.items():
             setattr(self, attr_DB, data.get(attr_OFF))
         for attr_OFF, attr_DB in OFF_TO_DB_NUTRIMENTS.items():
             setattr(self, attr_DB, data['nutriments'].get(attr_OFF, 0))
 
         for category in data.get('categories', '').split(', '):
+            #TODO: pourquoi pas .get ???!
             cat = Category.objects.filter(pk__iexact=category)
             if cat:
                 self.categories.set(cat[0])
@@ -63,8 +69,21 @@ class Product(models.Model):
             picture_url = ''
         self.picture_url = picture_url
 
+    def update_or_create(self) -> Any:
+        """
+            Search the object in database
+            * if is already created, database is updated and object id is returned
+            * if not, the object is added in database and his id is returned
+        """
+        product_attrs = self.__dict__
+        del product_attrs['_state']
+        return self.__class__.objects.update_or_create(**product_attrs)[0]
+
     @property
     def off_url(self) -> str:
+        """
+            Return the product OpenFoodFacts url
+        """
         return URL_PRODUCT + f'/{self.code}'
 
     class Meta:
