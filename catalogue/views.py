@@ -1,13 +1,10 @@
-from django.core import paginator
 from django.db.models.query import QuerySet, EmptyQuerySet
 from django.http.response import HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
-from .models import Category, Favorite_product, Product
-from django.http import Http404
+from django.shortcuts import redirect, render
+from .models import Favorite_product, Product
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
-from django.db.utils import IntegrityError
 from typing import Tuple
 from django.core.handlers.wsgi import WSGIRequest
 
@@ -125,10 +122,10 @@ def paginate(
     if all_objects.count() > nb_product_by_page:
         display_paginate = True
         paginator = Paginator(all_objects, nb_product_by_page)
-        page = request.GET.get('page', 1)
+        current_page = request.GET.get('page', 1)
 
         try:
-            all_objects = paginator.page(page)
+            all_objects = paginator.page(current_page)
         except PageNotAnInteger:
             all_objects = paginator.page(1)
         except EmptyPage:
@@ -137,12 +134,6 @@ def paginate(
         display_paginate = False
 
     return all_objects, display_paginate
-
-"""
-def search(request: WSGIRequest) -> HttpResponse:
-    print('search', request.method)
-    return render(request, 'catalogue/search.html')
-"""
 
 def ordered_substitute_food(product_id: str) -> QuerySet:
     """
@@ -167,12 +158,15 @@ def ordered_substitute_food(product_id: str) -> QuerySet:
 
 
 def details(request: WSGIRequest, product_id: str) -> HttpResponse:
-    print(product_id)
-    context = {}
+    """
+        Displays the ``product_id`` description page
+    """
+    context = {'msgs': []}
     try:
         product_id = Product.objects.get(pk=product_id)
     except Product.DoesNotExist:
-        context['msgs'] = ['Aucun produit ne correspond à vos critères de recherche.']
+        context['msgs'].append(\
+            'Aucun produit ne correspond à vos critères de recherche.')
     else:
         context['product_id'] = product_id
         context['page_title'] = product_id.product_name
@@ -182,25 +176,46 @@ def details(request: WSGIRequest, product_id: str) -> HttpResponse:
 
 @login_required(login_url='/user/login/')
 def save_product(request: WSGIRequest) -> HttpResponse:
-    print('save', request.method, request.POST)
     if request.method != 'POST':
         return redirect(request.META.get('HTTP_REFERER', 'home'))
 
-    product_search_id = None
-    if request.POST['product_search_id'] != '': # delete saved product
-        product_search_id = Product.objects.get(code=request.POST['product_search_id'])
+    product_search_id = \
+        Product.objects.get(code=request.POST['product_search_id'])
 
     substitute_id = Product.objects.get(code=request.POST['substitute_id'])
 
     if not substitute_id:
         return redirect(request.META['HTTP_REFERER'])
 
-    context = {}
-    if not product_search_id: # delete saved product
+    context = {'msgs': []}
+    already_saved = Favorite_product.objects.filter(
+            user=request.user,
+            product=request.POST['product_search_id'],
+            substitute=request.POST['substitute_id'])
+
+    if not already_saved and product_search_id:
+        new_favorite_product = Favorite_product()
+        new_favorite_product.product = product_search_id
+        new_favorite_product.substitute = substitute_id
+        new_favorite_product.user = request.user
+        new_favorite_product.save()
+        context['msgs'].append('Produit sauvegardé avec succès.')
+
+    return redirect(request.META['HTTP_REFERER'], context=context)
+
+@login_required(login_url='/user/login/')
+def delete_product(request: WSGIRequest) -> HttpResponse:
+    if request.method != 'POST':
+        return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+    context = {'msgs': []}
+    if request.POST['product_search_id'] == '':
+        # delete one product and all substitute
         already_saved = Favorite_product.objects.filter(
                 user=request.user,
                 product=request.POST['substitute_id'])
     else:
+        # delete one substitute to one product
         already_saved = Favorite_product.objects.filter(
                 user=request.user,
                 product=request.POST['product_search_id'],
@@ -208,17 +223,6 @@ def save_product(request: WSGIRequest) -> HttpResponse:
 
     if already_saved:
         already_saved.delete()
-        context['msgs'] = 'Produit retiré avec succès.'
-        print('Produit supprimé.')
-    elif product_search_id:
-        new_favorite_product = Favorite_product()
-        new_favorite_product.product = product_search_id
-        new_favorite_product.substitute = substitute_id
-        new_favorite_product.user = request.user
-        new_favorite_product.save()
-        context['msgs'] = 'Produit sauvegardé avec succès.'
-        print('Produit sauvegardé')
-    else:
-        print('error')
+        context['msgs'].append('Produit retiré avec succès.')
 
     return redirect(request.META['HTTP_REFERER'], context=context)

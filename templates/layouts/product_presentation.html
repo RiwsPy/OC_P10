@@ -25,7 +25,12 @@
     <p class="product_name">{{ product.product_name }}</p>
 
     {% if display_save_button %}
-        <form method="POST" action="{% url 'save' %}" accept-charset="utf8">
+        {% if product.display_save %}
+            <form method="POST" action="{% url 'save' %}" accept-charset="utf8">
+        {% else %}
+            <form method="POST" action="{% url 'delete' %}" accept-charset="utf8">
+        {% endif %}
+
             {% csrf_token %}
             <input type="hidden" name="substitute_id" value="{{ product.code }}">
             <input type="hidden" name="product_search_id" value="{{ product_id.code }}">
