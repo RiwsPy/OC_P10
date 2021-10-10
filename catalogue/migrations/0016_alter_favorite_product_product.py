@@ -14,6 +14,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='favorite_product',
             name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='search_product', to='catalogue.product'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name='search_product',
+                to='catalogue.product'),
         ),
     ]

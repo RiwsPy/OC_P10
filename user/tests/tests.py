@@ -1,12 +1,11 @@
-from django.http import response
 from django.test import TestCase
 from django.contrib.auth.models import User
-from user.forms import UserForm
 from django.urls.base import reverse
 
 username = 'testuser'
 email = 'loulou@test.com'
 password = 'Pxâ76jjs1Ps'
+
 
 class User_test(TestCase):
     def setUp(self):
@@ -35,7 +34,7 @@ class User_test(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/login.html')
 
-    def test_login_page_status_code(self):
+    def test_account_page_status_code(self):
         response = self.user_login()
         response = self.client.get(reverse('account'))
 
@@ -68,22 +67,18 @@ class User_test(TestCase):
         self.assertRedirects(response, '/')
 
 
-
 class User_without_auto_login(TestCase):
     def test_account(self):
         response = self.client.get(reverse('account'))
         self.assertEqual(response.status_code, 302)
-        #self.assertTemplateUsed(response, template_name='login.html')
 
     def test_favorite(self):
         response = self.client.get(reverse('favorite'))
         self.assertEqual(response.status_code, 302)
-        #self.assertTemplateUsed(response, 'login.html')
 
     def test_logout(self):
         response = self.client.get(reverse('logout'))
         self.assertEqual(response.status_code, 302)
-        #self.assertTemplateUsed(response, 'templates/layouts/base.html')
 
     def test_register_user(self):
         data = {
@@ -106,4 +101,3 @@ class User_without_auto_login(TestCase):
         response = self.client.post(reverse('register'), data, follow=True)
         self.assertFalse(response.context['user'].is_authenticated)
         self.assertTemplateUsed(response, 'user/register.html')
-    

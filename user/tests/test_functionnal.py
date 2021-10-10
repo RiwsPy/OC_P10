@@ -12,19 +12,21 @@ username = 'Rititi'
 email = 'ri.titi@mail.fr'
 password = 'pNd9sdfi'
 
+
 class Test_favorite_product(LiveServerTestCase):
     def setUp(self):
         # Create db product
         category_01 = Category.objects.create(
             name="Plat léger"
         )
+        img_link = "images/products/317/658/201/6252/front_fr.59.400.jpg"
         product_01 = Product.objects.create(
             code="32",
             product_name="Fromage à raclette",
             nova_groups=4,
             nutrition_grades="D",
             stores="",
-            picture_url= URL_OFF + "images/products/317/658/201/6252/front_fr.59.400.jpg",
+            picture_url=URL_OFF + img_link,
             eco_score="C",
             energy_value=10.0,
             fat_value=12.2,
@@ -36,21 +38,22 @@ class Test_favorite_product(LiveServerTestCase):
         product_01.categories.set([category_01])
 
         cod = 355
+        img_link = "images/products/359/669/013/6046/front_fr.39.400.jpg",
         for i in range(10):
-            new_product= Product.objects.create(
-                code= str(cod+i),
-                product_name= "Cordon bleu père Dodu",
-                nova_groups= 4,
-                nutrition_grades= "B",
-                stores= "",
-                picture_url= URL_OFF + "images/products/359/669/013/6046/front_fr.39.400.jpg",
-                eco_score= "D",
-                energy_value= 32.0,
-                fat_value= 42.2,
-                sugar_value= 12.1,
-                fiber_value= 72.1,
-                protein_value= 14.2,
-                salt_value= 9.2)
+            new_product = Product.objects.create(
+                code=str(cod+i),
+                product_name="Cordon bleu père Dodu",
+                nova_groups=4,
+                nutrition_grades="B",
+                stores="",
+                picture_url=URL_OFF + img_link,
+                eco_score="D",
+                energy_value=32.0,
+                fat_value=42.2,
+                sugar_value=12.1,
+                fiber_value=72.1,
+                protein_value=14.2,
+                salt_value=9.2)
             new_product.categories.set([category_01])
 
         # Create new user
@@ -61,9 +64,9 @@ class Test_favorite_product(LiveServerTestCase):
         }
         self.user = User.objects.create_user(**self.data)
 
-
         root_dir = os.path.dirname(os.path.abspath(__file__))
-        self.driver = webdriver.Firefox(executable_path=os.path.join(root_dir, 'geckodriver'))
+        self.driver = webdriver.Firefox(
+            executable_path=os.path.join(root_dir, 'geckodriver'))
         self.action = webdriver.ActionChains(self.driver)
 
         # Open the navigator with the server adress
@@ -71,7 +74,6 @@ class Test_favorite_product(LiveServerTestCase):
 
     def tearDown(self):
         self.driver.quit()
-
 
     def test_login(self):
         login = self.driver.find_element_by_id('login_button')
@@ -89,7 +91,9 @@ class Test_favorite_product(LiveServerTestCase):
         time.sleep(2)
         button_ok.click()
 
-        self.assertEqual(self.driver.current_url, self.live_server_url + reverse('home'))
+        self.assertEqual(
+            self.driver.current_url,
+            self.live_server_url + reverse('home'))
 
         self.find_substitute()
 
@@ -102,13 +106,16 @@ class Test_favorite_product(LiveServerTestCase):
         self.driver.implicitly_wait(2)
         search_button.click()
         time.sleep(3)
-        self.assertEqual(self.driver.current_url, self.live_server_url + reverse('result') + '?user_search=' + query)
+        self.assertEqual(
+            self.driver.current_url,
+            self.live_server_url + reverse('result') + '?user_search=' + query)
 
-        #first_product = self.driver.find_elements_by_class_name('product_presentation')
         img_button = self.driver.find_elements_by_class_name('text-content')
         img_button[0].click()
         time.sleep(2)
-        self.assertEqual(self.driver.current_url, self.live_server_url + reverse('result') + '?user_search=355')
+        self.assertEqual(
+            self.driver.current_url,
+            self.live_server_url + reverse('result') + '?user_search=355')
 
         self.save_subsitute()
 
@@ -131,7 +138,9 @@ class Test_favorite_product(LiveServerTestCase):
         favorite_button = self.driver.find_element_by_id('favorite_button')
         favorite_button.click()
         time.sleep(1)
-        self.assertEqual(self.driver.current_url, self.live_server_url + reverse('favorite'))
+        self.assertEqual(
+            self.driver.current_url,
+            self.live_server_url + reverse('favorite'))
 
         self.del_subsitute()
 
@@ -155,4 +164,6 @@ class Test_favorite_product(LiveServerTestCase):
         logout_button.click()
         time.sleep(1)
 
-        self.assertEqual(self.driver.current_url, self.live_server_url + reverse('home'))
+        self.assertEqual(
+            self.driver.current_url,
+            self.live_server_url + reverse('home'))

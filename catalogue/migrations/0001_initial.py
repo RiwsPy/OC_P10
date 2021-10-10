@@ -14,7 +14,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID')),
                 ('code', models.CharField(max_length=13, unique=True)),
                 ('product_name', models.CharField(max_length=100)),
                 ('nova_groups', models.PositiveSmallIntegerField()),

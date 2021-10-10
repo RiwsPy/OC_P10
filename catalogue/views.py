@@ -10,6 +10,7 @@ from django.core.handlers.wsgi import WSGIRequest
 
 # TODO: comment voir la fiche OFF d'un produit non substitué ?
 
+
 # Create your views here.
 def result(request: WSGIRequest) -> HttpResponse:
     if request.method != 'GET':
@@ -19,7 +20,7 @@ def result(request: WSGIRequest) -> HttpResponse:
     print('result', user_search)
     all_objects = []
     context = {
-        'product_id': None, # to display the image product if any
+        'product_id': None,  # to display the image product if any
         'paginate': False,
         'display_save_button': True,
         'msgs': [],
@@ -27,15 +28,18 @@ def result(request: WSGIRequest) -> HttpResponse:
     }
 
     # search by code then by name
-    product_id = Product.objects.filter(code=user_search) or \
-                 Product.objects.filter(product_name__icontains=user_search)
+    product_id = \
+        Product.objects.filter(code=user_search) or \
+        Product.objects.filter(product_name__icontains=user_search)
 
     if product_id.exists():
-        if product_id.count() > 1: # too many search result : choice page
+        if product_id.count() > 1:  # too many search result : choice page
             all_objects = product_id
             product_id = None
             context['page_title'] = user_search
-            context['msgs'].append('Plusieurs résultats correspondent à vos critères de recherche :')
+            context['msgs'].append(
+                'Plusieurs résultats correspondent' +
+                ' à vos critères de recherche :')
         else:
             product_id = product_id[0]
             context['product_id'] = product_id
@@ -46,7 +50,8 @@ def result(request: WSGIRequest) -> HttpResponse:
         # display paginate
         all_objects, context['paginate'] = paginate(request, all_objects)
     else:
-        context['msgs'].append('Aucun produit ne correspond aux critères de recherche... :(')
+        context['msgs'].append(
+            'Aucun produit ne correspond aux critères de recherche... :(')
 
     # display save_button
     display_save_button = product_id and request.user.is_authenticated
@@ -111,12 +116,13 @@ def favorite_result(request: WSGIRequest) -> HttpResponse:
 def paginate(
             request: WSGIRequest,
             all_objects: QuerySet,
-            nb_product_by_page: int=6) \
+            nb_product_by_page: int = 6) \
                 -> Tuple[QuerySet, bool]:
     """
         Create and configure product paginate if necessary.
         * Up to ``nb_product_by_page`` can be used by page.
-        * Tuple is returned, first element is ``all_objects`` with paginate (if any).
+        * Tuple is returned, first element is ``all_objects``
+        with paginate (if any).
         * Second element is bool, True if paginate is created, False otherwise.
     """
     if all_objects.count() > nb_product_by_page:
@@ -134,6 +140,7 @@ def paginate(
         display_paginate = False
 
     return all_objects, display_paginate
+
 
 def ordered_substitute_food(product_id: str) -> QuerySet:
     """
@@ -165,7 +172,7 @@ def details(request: WSGIRequest, product_id: str) -> HttpResponse:
     try:
         product_id = Product.objects.get(pk=product_id)
     except Product.DoesNotExist:
-        context['msgs'].append(\
+        context['msgs'].append(
             'Aucun produit ne correspond à vos critères de recherche.')
     else:
         context['product_id'] = product_id
@@ -202,6 +209,7 @@ def save_product(request: WSGIRequest) -> HttpResponse:
         context['msgs'].append('Produit sauvegardé avec succès.')
 
     return redirect(request.META['HTTP_REFERER'], context=context)
+
 
 @login_required(login_url='/user/login/')
 def delete_product(request: WSGIRequest) -> HttpResponse:

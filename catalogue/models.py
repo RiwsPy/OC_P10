@@ -1,11 +1,13 @@
 from django.db import models
-from catalogue.management.commands.enums import OFF_TO_DB, OFF_TO_DB_NUTRIMENTS, URL_PRODUCT
+from catalogue.management.commands.enums import OFF_TO_DB,\
+    OFF_TO_DB_NUTRIMENTS, URL_PRODUCT
 from django.contrib.auth.models import User
 from django.db.models import UniqueConstraint
 from typing import Any
 
 # Produit
 # Table d'association Produit / Catégorie
+
 
 class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -16,7 +18,8 @@ class Category(models.Model):
 
 # Create your models here.
 class Product(models.Model):
-    # See: https://github.com/django/django/blob/main/django/db/models/fields/__init__.py
+    # See:
+    # https://github.com/django/django/blob/main/django/db/models/fields/__init__.py
     # Par défaut, null = False
 
     code = models.CharField(max_length=13, primary_key=True)
@@ -27,7 +30,8 @@ class Product(models.Model):
     categories = models.ManyToManyField(Category, related_name='category')
     picture_url = models.URLField()
 
-    # ECO Score: https://fr.openfoodfacts.org/eco-score-l-impact-environnemental-des-produits-alimentaires
+    # ECO Score:
+    # https://fr.openfoodfacts.org/eco-score-l-impact-environnemental-des-produits-alimentaires
     eco_score = models.CharField(max_length=1)
 
     # Nutrition 100g
@@ -37,7 +41,6 @@ class Product(models.Model):
     fiber_value = models.FloatField(default=0)
     protein_value = models.FloatField(default=0)
     salt_value = models.FloatField(default=0)
-
 
     def __str__(self) -> str:
         return self.product_name
@@ -58,7 +61,7 @@ class Product(models.Model):
             setattr(self, attr_DB, data['nutriments'].get(attr_OFF, 0))
 
         for category in data.get('categories', '').split(', '):
-            #TODO: pourquoi pas .get ???!
+            # TODO: pourquoi pas .get ???!
             cat = Category.objects.filter(pk__iexact=category)
             if cat:
                 self.categories.set(cat[0])
@@ -72,8 +75,10 @@ class Product(models.Model):
     def update_or_create(self) -> Any:
         """
             Search the object in database
-            * if is already created, database is updated and object id is returned
-            * if not, the object is added in database and his id is returned
+            * if is already created, database is updated and
+            object id is returned
+            * if not, the object is added in database and his id
+            is returned
         """
         product_attrs = self.__dict__
         del product_attrs['_state']
@@ -91,8 +96,14 @@ class Product(models.Model):
 
 
 class Favorite_product(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='search_product')
-    substitute = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='substitude_product')
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.PROTECT,
+        related_name='search_product')
+    substitute = models.ForeignKey(
+        Product,
+        on_delete=models.PROTECT,
+        related_name='substitude_product')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:

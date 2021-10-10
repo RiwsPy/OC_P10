@@ -47,4 +47,3 @@ OFF_TO_DB_NUTRIMENTS = {
     "proteins_100g": "protein_value",
     "fiber_100g": "fiber_value",
 }
-
