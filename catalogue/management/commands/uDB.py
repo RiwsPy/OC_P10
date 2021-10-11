@@ -3,13 +3,14 @@ from .enums import HEADERS, PAYLOAD, CATEGORIES, URL_SEARCH
 import requests
 from catalogue.models import Product, Category
 
+
 class Command(BaseCommand):
     help = 'Update database with OpenFoodFacts API'
 
     def handle(self, *args, **kwargs) -> None:
         self.call_api()
-        self.stdout.write(self.style.SUCCESS('Mise à jour de la base de données réussie.'))
-        #self.stdout.write(self.style.ERROR('Error')
+        self.stdout.write(
+            self.style.SUCCESS('Mise à jour de la base de données réussie.'))
 
     def call_api(self) -> None:
         """
@@ -46,6 +47,5 @@ class Command(BaseCommand):
         pro.clean(product_data)
         if pro.is_clean():
             pro = pro.update_or_create()
-            #pro.save()
             pro.categories.add(cat)
             pro.save()

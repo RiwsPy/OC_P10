@@ -8,7 +8,6 @@ import re
 
 # Create your views here.
 def index(request):
-    print(request.method)
     if request.user.is_authenticated:
         return account(request)
     else:
@@ -22,14 +21,12 @@ def connexion(request, context={}):
     if request.user.is_authenticated:
         return account(request)
 
-    print(context.get('msgs'))
     context['form'] = UserForm()
     return render(request, 'user/login.html', context)
 
 
 @login_required(login_url='/user/login/')
 def account(request):
-    print('account')
     context = {
         'page_title': request.user.username,
     }
@@ -37,7 +34,6 @@ def account(request):
 
 
 def user_login(request):
-    print('user_login')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password1']
@@ -52,7 +48,6 @@ def user_login(request):
 
 @login_required(login_url='/')
 def user_logout(request):
-    print('user_logout')
     if request.user.is_authenticated:
         logout(request)
     return redirect('home')
@@ -63,7 +58,6 @@ regex_remove_tag = re.compile(r'<[^>]*>')
 
 def register(request):
     if request.user.is_authenticated:
-        print('user déjà connecté')
         return redirect('home')
 
     context = {'msgs': []}
@@ -77,7 +71,6 @@ def register(request):
             password = form.cleaned_data['password1']
             user = authenticate(request, username=username, password=password)
             login(request, user)
-            print('Le compte a été créé avec succès.')
             return redirect('home')
 
         context['msgs'].append('Compte non créé.')

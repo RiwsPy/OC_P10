@@ -17,7 +17,6 @@ def result(request: WSGIRequest) -> HttpResponse:
         return redirect(request.META['HTTP_REFERER'])
 
     user_search = request.GET.get('user_search', '')[:100]
-    print('result', user_search)
     all_objects = []
     context = {
         'product_id': None,  # to display the image product if any
