@@ -49,6 +49,7 @@ def result(request: WSGIRequest) -> HttpResponse:
         # display paginate
         all_objects, context['paginate'] = paginate(request, all_objects)
     else:
+        context['page_title'] = user_search
         context['msgs'].append(
             'Aucun produit ne correspond aux critères de recherche... :(')
 
