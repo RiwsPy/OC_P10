@@ -93,6 +93,7 @@ class Product(models.Model):
 
     class Meta:
         verbose_name = "produit"
+        ordering = ['code']
 
 
 class Favorite_product(models.Model):
