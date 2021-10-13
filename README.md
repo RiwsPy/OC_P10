@@ -117,3 +117,8 @@ https://healthy-product.herokuapp.com/
     - models.py
     - urls.py
     - views.py
+
+
+NB:
+the selenium functionnal test requires the installation of Firefox web browser on your computer, it is also necessary to have a geckodriver file compatible with your computer system (you must place this file in user/tests/ folder, the geckodriver current is only compatible with Ubuntu).
+See also : https://github.com/mozilla/geckodriver/releases
