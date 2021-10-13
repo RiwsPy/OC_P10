@@ -70,49 +70,6 @@ def result(request: WSGIRequest) -> HttpResponse:
     return render(request, 'catalogue/result.html', context)
 
 
-@login_required(login_url='/user/login/')
-def favorite_result(request: WSGIRequest) -> HttpResponse:
-    if request.method != 'GET':
-        return redirect(request.META['HTTP_REFERER'])
-
-    user_search = request.GET.get('user_search', '')
-    product_id = Product.objects.get(code=user_search)
-    if not product_id:
-        return redirect(request.META['HTTP_REFERER'])
-
-    context = {
-        'user_search': product_id,
-        'product_id': product_id,
-        'paginate': False,
-        'display_save_button': True,
-        'page_title':  product_id.product_name,
-        'msgs': [],
-    }
-
-    # QuerySet with all substitute product
-    all_objects = Favorite_product.objects.filter(
-                    user=request.user,
-                    product=product_id.code)
-
-    # save all substitute code
-    favorite_set = set()
-    for favorite_product in all_objects:
-        favorite_set.add(favorite_product.substitute.code)
-
-    # search all substitute Product
-    all_objects = Product.objects.filter(code__in=favorite_set)
-
-    if all_objects.exists():
-        all_objects, context['paginate'] = paginate(request, all_objects)
-        # display delete_button
-        for product in all_objects:
-            product.display_save = False
-
-    context['db'] = all_objects
-
-    return render(request, 'catalogue/result.html', context)
-
-
 def paginate(
             request: WSGIRequest,
             all_objects: QuerySet,
