@@ -1,5 +1,5 @@
 # PurBeurre Project
-OC project n°10
+OC project n°8
 
 In the continuity of offering good everyday products, this project aims to allow
 everyone to be able to substitute a product with a healthier equivalent.
