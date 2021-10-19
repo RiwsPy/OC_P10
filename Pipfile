@@ -17,6 +17,7 @@ whitenoise = "*"
 dj-database-url = "*"
 gunicorn = "*"
 requests = "*"
+supervisor = "*"
 
 [requires]
 python_version = "3.8"
