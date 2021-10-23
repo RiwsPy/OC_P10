@@ -2,6 +2,9 @@ language: python
 python:
   - '3.8'
 
+before_script:
+  - pipenv install
+
 env: DJANGO_SETTINGS_MODULE="PurBeurre.settings_travis"
 
 services:
