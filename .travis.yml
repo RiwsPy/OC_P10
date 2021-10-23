@@ -5,7 +5,7 @@ python:
 before_script:
   - pipenv shell
 
-env: DJANGO_SETTINGS_MODULE="PurBeurre.__init__"
+env: DJANGO_SETTINGS_MODULE="PurBeurre.settings_travis"
 
 services:
   - postgresql
