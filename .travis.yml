@@ -11,4 +11,4 @@ services:
   - postgresql
 
 script:
-  - ./manage.py test tests/catalogue/ tests/user/
+  - ./manage.py test catalogue/tests/ user/tests/
