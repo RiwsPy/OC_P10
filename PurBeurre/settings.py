@@ -14,13 +14,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import dj_database_url
+load_dotenv()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.getenv('ENV') == 'PRODUCTION':
-    DEBUG = False
-else:
-    load_dotenv()
-    DEBUG = True
+DEBUG = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -156,14 +153,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 FIXTURE_DIRS = ['catalogue', 'user']
 
-if os.getenv('ENV') == 'PRODUCTION':
+# Simplified static file serving.
+STATICFILES_STORAGE = \
+    'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-    # Simplified static file serving.
-    STATICFILES_STORAGE = \
-        'django.contrib.staticfiles.storage.StaticFilesStorage'
-
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 LOGGING = {
     'version': 1,
