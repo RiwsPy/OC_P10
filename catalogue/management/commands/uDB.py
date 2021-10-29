@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from .enums import HEADERS, PAYLOAD, CATEGORIES, URL_SEARCH
+from catalogue.management.commands.enums import HEADERS, PAYLOAD, CATEGORIES, URL_SEARCH
 import requests
 from catalogue.models import Product, Category
 

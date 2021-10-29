@@ -1,7 +1,7 @@
 from django.db.models.query import QuerySet, EmptyQuerySet
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
-from .models import Favorite_product, Product
+from catalogue.models import Favorite_product, Product
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required

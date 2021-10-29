@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserForm
+from user.forms import UserForm
 from django.contrib.auth.decorators import login_required
 from catalogue.models import Favorite_product, Product
 import re

@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from . import views
+from catalogue import views
 
 urlpatterns = [
     path('', views.result, name='result'),
