@@ -178,9 +178,14 @@ LOGGING = {
     },
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s '
-                      '%(process)d %(thread)d %(message)s'
+            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
+                       'pathname=%(pathname)s lineno=%(lineno)s ' +
+                       'funcname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
         },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        }
     },
     'handlers': {
         'sentry': {
@@ -195,7 +200,7 @@ LOGGING = {
         }
     },
     'loggers': {
-        'django.db.backends': {
+        'testlogger': {
             'level': 'ERROR',
             'handlers': ['console'],
             'propagate': False,
