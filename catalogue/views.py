@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from typing import Tuple
 from django.core.handlers.wsgi import WSGIRequest
+import logging
 
 # TODO: comment voir la fiche OFF d'un produit non substitué ?
 
@@ -15,6 +16,12 @@ from django.core.handlers.wsgi import WSGIRequest
 def result(request: WSGIRequest) -> HttpResponse:
     if request.method != 'GET':
         return redirect(request.META['HTTP_REFERER'])
+
+    logger = logging.getLogger(__name__)
+    logger.info('New search', exc_info=True, extra={
+        # Optionally pass a request and we'll grab any information we can
+        'request': request,
+    })
 
     user_search = request.GET.get('user_search', '')[:100]
     all_objects = []
