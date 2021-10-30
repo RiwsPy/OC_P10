@@ -262,7 +262,7 @@ sentry_sdk.init(
 )
 
 RAVEN_CONFIG = {
-    'dsn': 'https://somethingverylong@sentry.io/216272', # caution replace by your own!!
+    'dsn': 'https://somethingverylong@sentry.io/6041945', # caution replace by your own!!
     # If you are using git, you can also automatically configure the
     # release based on the git info.
     'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
