@@ -19,10 +19,10 @@ from sentry_sdk.integrations.django import DjangoIntegration
 import raven
 
 # SECURITY WARNING: don't run with debug turned on in production!
+load_dotenv()
 if os.getenv('ENV') == 'PRODUCTION':
     DEBUG = False
 else:
-    load_dotenv()
     DEBUG = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
