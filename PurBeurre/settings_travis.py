@@ -1,5 +1,4 @@
 from PurBeurre.settings import *
-import os
 
 DATABASES = {
     'default': {
