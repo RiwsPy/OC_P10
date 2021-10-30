@@ -1,4 +1,5 @@
-from . import *
+from PurBeurre.settings import *
+import os
 
 DATABASES = {
     'default': {
@@ -11,7 +12,4 @@ DATABASES = {
     },
 }
 
-
-DJANGO_SECRET_KEY='django-insecure-d)9zweg&)9@%31('
-ENV='PRODUCTION'
-ALLOWED_HOST=['165.232.112.10']
+SECRET_KEY = "django-insecure-t*!rwp+hhb&q*sfb#+5#bsrgn9c5x"
