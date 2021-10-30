@@ -14,9 +14,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import dj_database_url
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-import raven
 
 # SECURITY WARNING: don't run with debug turned on in production!
 load_dotenv()
@@ -50,7 +47,6 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'debug_toolbar',
-    'raven.contrib.django.raven_compat',
 
     'catalogue.apps.CatalogueConfig',
     'user.apps.UserConfig',
@@ -171,11 +167,7 @@ if os.getenv('ENV') == 'PRODUCTION':
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
-    'root': {
-        'level': 'INFO', # WARNING by default. Change this to capture more than warnings.
-        'handlers': ['sentry'],
-    },
+    'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
@@ -188,10 +180,9 @@ LOGGING = {
         }
     },
     'handlers': {
-        'sentry': {
-            'level': 'INFO', # To capture more than ERROR, change to WARNING, INFO, etc.
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-            'tags': {'custom-tag': 'x'},
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
         },
         'console': {
             'level': 'DEBUG',
@@ -201,47 +192,10 @@ LOGGING = {
     },
     'loggers': {
         'testlogger': {
-            'level': 'ERROR',
             'handlers': ['console'],
-            'propagate': False,
-        },
-        'raven': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'sentry.errors': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-    },
+            'level': 'INFO',
+        }
+    }
 }
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
-
-
-
-sentry_sdk.init(
-    dsn="https://d42e418337c0497ca27ee7012c862b71@o1055791.ingest.sentry.io/6041945",
-    integrations=[DjangoIntegration()],
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
-)
-
-
-RAVEN_CONFIG = {
-    'dsn': 'https://somethingverylong@sentry.io/216272', # caution replace by your own!!
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
-}
-
-
