@@ -14,6 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import dj_database_url
+
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 import raven
@@ -34,7 +35,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = ['165.232.112.10'] # os.getenv('ALLOWED_HOSTS')
+# os.getenv('ALLOWED_HOSTS')
+ALLOWED_HOSTS=['127.0.0.1', '165.232.112.10']
 
 
 # Application definition
@@ -159,12 +161,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 FIXTURE_DIRS = ['catalogue', 'user']
 
-# Simplified static file serving.
-STATICFILES_STORAGE = \
-    'django.contrib.staticfiles.storage.StaticFilesStorage'
+if os.getenv('ENV') == 'PRODUCTION':
+    # Simplified static file serving.
+    STATICFILES_STORAGE = \
+        'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
 
 LOGGING = {
     'version': 1,
@@ -210,8 +214,7 @@ LOGGING = {
     },
 }
 
-"""
-LOGGING = {
+"""LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
@@ -242,10 +245,11 @@ LOGGING = {
             'level': 'INFO',
         }
     }
-}
-"""
+}"""
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
+
+
 
 sentry_sdk.init(
     dsn="https://d42e418337c0497ca27ee7012c862b71@o1055791.ingest.sentry.io/6041945",
