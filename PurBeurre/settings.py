@@ -147,7 +147,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "static/"),
 ]
 
 # Default primary key field type
@@ -157,7 +157,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #INTERNAL_IPS = ['127.0.0.1']
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+if not DEBUG:
+    STATIC_ROOT = ''
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 FIXTURE_DIRS = ['catalogue', 'user']
 
